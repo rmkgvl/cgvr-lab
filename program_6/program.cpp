@@ -2,6 +2,8 @@
 #include<gl/glut.h>
 #include<math.h>
 
+//Use 10 instead of 20 for a more sphere like look.
+
 void sphere()
 {
 double c=3.142/180, phi, phir, phir20,theta, thetar, x, y, z, c80, xc, yc, r; // converting to radians
