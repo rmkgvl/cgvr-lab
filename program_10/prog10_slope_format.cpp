@@ -1,10 +1,11 @@
-// C++ program for implementing Sutherland?Hodgman 
+// C++ program for implementing Sutherland�Hodgman 
 // algorithm for polygon clipping 
 #include<iostream>
 #include<GL/glut.h>
 using namespace std;
 int poly_size, poly_points[20][2], org_poly_size, org_poly_points[20][2], clipper_size, clipper_points[20][2];
 const int MAX_POINTS = 20;
+
 
 
 // Returns x-value of point of intersection of two 
@@ -20,8 +21,23 @@ void drawPoly(int p[][2], int n) {
 int x_intersect(int x1, int y1, int x2, int y2,
 	int x3, int y3, int x4, int y4)
 {
-	float m1 = (float)(y2 - y1) / (x2 - x1);
-	float m2 = (float)(y4 - y3) / (x4 - x3);
+	float m1, m2;
+	if (x1 == x2)
+	{
+		m1 = 10000;
+	}
+	else
+	{
+		m1 = (float)(y2 - y1) / (x2 - x1);
+	}
+	if (x3 == x4)
+	{
+		m2 = 10000;
+	}
+	else
+	{
+		m2 = (float)(y4 - y3) / (x4 - x3);
+	}
 	int num = (y3 - y1) + m1 * x1 - m2 * x3;
 	int den = m1 - m2;
 	return num / den;
@@ -32,13 +48,27 @@ int x_intersect(int x1, int y1, int x2, int y2,
 int y_intersect(int x1, int y1, int x2, int y2,
 	int x3, int y3, int x4, int y4)
 {
-	float m1 = (float)(y2 - y1) / (x2 - x1);
-	float m2 = (float)(y4 - y3) / (x4 - x3);
+	float m1, m2;
+	if (x1 == x2)
+	{
+		m1 = 10000;
+	}
+	else
+	{
+		m1 = (float)(y2 - y1) / (x2 - x1);
+	}
+	if (x3 == x4)
+	{
+		m2 = 10000;
+	}
+	else
+	{
+		m2 = (float)(y4 - y3) / (x4 - x3);
+	}
 	int num = m2 * y1 - m1 * y3 + m1 * m2 * (x3 - x1);
 	int den = m2 - m1;
 	return num / den;
 }
-
 // This functions clips all the edges w.r.t one clip 
 // edge of clipping area 
 void clip(int poly_points[][2], int& poly_size,
@@ -79,8 +109,10 @@ void clip(int poly_points[][2], int& poly_size,
 			// and the second point is added 
 			new_points[new_poly_size][0] = x_intersect(x1,
 				y1, x2, y2, ix, iy, kx, ky);
+			//printf("%d ", new_points[new_poly_size][0]);
 			new_points[new_poly_size][1] = y_intersect(x1,
 				y1, x2, y2, ix, iy, kx, ky);
+			//printf("%d\n", new_points[new_poly_size][1]);
 			new_poly_size++;
 
 			new_points[new_poly_size][0] = kx;
@@ -94,8 +126,10 @@ void clip(int poly_points[][2], int& poly_size,
 			//Only point of intersection with edge is added 
 			new_points[new_poly_size][0] = x_intersect(x1,
 				y1, x2, y2, ix, iy, kx, ky);
+			//printf("%d ", new_points[new_poly_size][0]);
 			new_points[new_poly_size][1] = y_intersect(x1,
 				y1, x2, y2, ix, iy, kx, ky);
+			//printf("%d\n", new_points[new_poly_size][1]);
 			new_poly_size++;
 		}
 
@@ -125,7 +159,7 @@ void init() {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-// Implements Sutherland?Hodgman algorithm 
+// Implements Sutherland�Hodgman algorithm 
 void display()
 {
 	init();
@@ -173,7 +207,7 @@ int main(int argc, char* argv[])
 		printf("Clip Vertex:\n");
 		scanf_s("%d%d", &clipper_points[i][0], &clipper_points[i][1]);
 	}
-
+	printf("clipping in progress\n");
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(400, 400);
